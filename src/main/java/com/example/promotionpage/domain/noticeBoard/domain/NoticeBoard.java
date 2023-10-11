@@ -28,4 +28,12 @@ public class NoticeBoard {
 		this.title = title;
 		this.imageUrl = imageUrl;
 	}
+
+	public void updateTitle(String title) {
+		this.title = title;
+	}
+
+	public void updateImageUrl(String updatedImageUrl) {
+		this.imageUrl = updatedImageUrl;
+	}
 }

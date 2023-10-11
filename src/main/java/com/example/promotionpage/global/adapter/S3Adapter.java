@@ -7,18 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.promotionpage.global.common.response.ApiResponse;
 import com.example.promotionpage.global.error.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 
 @RequiredArgsConstructor
 @Service
-public class S3Uploader {
+public class S3Adapter {
 
 	private final AmazonS3Client amazonS3Client;
 
@@ -33,10 +32,19 @@ public class S3Uploader {
 		metadata.setContentType("image/png");
 		try {
 			amazonS3Client.putObject(bucket, fileName, multipartFile.getInputStream(), metadata);
-			return ApiResponse.ok("이미지 업로드 성공", amazonS3Client.getUrl(bucket, fileName).toString());
+			return ApiResponse.ok("S3 버킷에 이미지 업로드를 성공하였습니다.", amazonS3Client.getUrl(bucket, fileName).toString());
 		} catch (IOException e) {
-			return ApiResponse.withError(ErrorCode.INTERNAL_SERVER_ERROR);
+			return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
 		}
+	}
 
+	public ApiResponse<String> deleteFile(String fileName){
+		try{
+			amazonS3Client.deleteObject(bucket, fileName);
+			return ApiResponse.ok("S3 버킷에서 이미지를 성공적으로 삭제하였습니다.", amazonS3Client.getUrl(bucket, fileName).toString());
+
+		}catch (SdkClientException e){
+			return ApiResponse.withError(ErrorCode.ERROR_S3_DELETE_OBJECT);
+		}
 	}
 }
