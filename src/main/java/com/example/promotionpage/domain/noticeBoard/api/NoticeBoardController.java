@@ -1,6 +1,8 @@
 package com.example.promotionpage.domain.noticeBoard.api;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +50,18 @@ public class NoticeBoardController {
 	@DeleteMapping("/notice-board")
 	public ApiResponse deleteNoticeBoard(@RequestBody Long noticeBoardId){
 		return noticeBoardService.deleteNoticeBoard(noticeBoardId);
+	}
+
+	@Operation(summary = "공지 사항 전체 조회 API")
+	@GetMapping("/notice-board")
+	public ApiResponse retrieveAllNoticeBoard(){
+		return noticeBoardService.retrieveAllNoticeBoard();
+	}
+
+	@Operation(summary = "공지 사항 상세 조회 API")
+	@GetMapping("/notice-board/{noticeBoardId}")
+	public ApiResponse retrieveNoticeBoard(@PathVariable Long noticeBoardId){
+		return noticeBoardService.retrieveNoticeBoard(noticeBoardId);
 	}
 
 

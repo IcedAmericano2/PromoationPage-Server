@@ -1,5 +1,6 @@
 package com.example.promotionpage.domain.noticeBoard.application;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -90,5 +91,21 @@ public class NoticeBoardService {
 
 		noticeBoardRepository.delete(noticeBoard);
 		return ApiResponse.ok("공지 사항을 성공적으로 삭제하였습니다.");
+	}
+
+	public ApiResponse retrieveAllNoticeBoard() {
+		List<NoticeBoard> noticeBoardList = noticeBoardRepository.findAll();
+		if(noticeBoardList.isEmpty()){
+			return ApiResponse.ok("공지 사항이 존재하지 않습니다.");
+		}
+		return ApiResponse.ok("공지 사항 전체 목록을 성공적으로 조회하였습니다.", noticeBoardList);
+	}
+
+	public ApiResponse retrieveNoticeBoard(Long noticeBoardId) {
+		Optional<NoticeBoard> optionalNoticeBoard = noticeBoardRepository.findById(noticeBoardId);
+		if(optionalNoticeBoard.isEmpty()){
+			return ApiResponse.withError(ErrorCode.INVALID_NOTICE_BOARD_ID);
+		}
+		return ApiResponse.ok("공지 사항을 성공적으로 조회하였습니다.", optionalNoticeBoard.get());
 	}
 }
