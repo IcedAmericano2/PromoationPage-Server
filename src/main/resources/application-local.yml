@@ -14,7 +14,4 @@ spring:
       username: sa
       password:
 
-server:
-  port: 9000
-
 
