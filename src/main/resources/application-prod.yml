@@ -24,9 +24,6 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
 
-server:
-  port: 8000
-
 aws:
   s3:
     access-key: ${ACCESS_KEY}
