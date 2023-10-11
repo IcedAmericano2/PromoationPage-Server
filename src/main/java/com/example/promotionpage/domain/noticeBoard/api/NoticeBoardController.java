@@ -1,7 +1,9 @@
 package com.example.promotionpage.domain.noticeBoard.api;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -40,6 +42,12 @@ public class NoticeBoardController {
 	@PutMapping("/notice-board")
 	public ApiResponse updateNoticeBoard(@RequestPart(required = false) MultipartFile file, @Valid @RequestPart(value = "updateNoticeBoardRequestDto") UpdateNoticeBoardRequestDto dto){
 		return noticeBoardService.updateNoticeBoard(file, dto.title(), dto.noticeBoardId());
+	}
+
+	@Operation(summary = "공지 사항 삭제 API")
+	@DeleteMapping("/notice-board")
+	public ApiResponse deleteNoticeBoard(@RequestBody Long noticeBoardId){
+		return noticeBoardService.deleteNoticeBoard(noticeBoardId);
 	}
 
 

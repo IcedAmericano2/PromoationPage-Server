@@ -75,4 +75,20 @@ public class NoticeBoardService {
 		NoticeBoard updatedNoticeBoard = noticeBoardRepository.save(noticeBoard);
 		return ApiResponse.ok("공지 사항을 성공적으로 수정하였습니다.", updatedNoticeBoard);
 	}
+
+	public ApiResponse deleteNoticeBoard(Long noticeBoardId) {
+		Optional<NoticeBoard> optionalNoticeBoard = noticeBoardRepository.findById(noticeBoardId);
+		if(optionalNoticeBoard.isEmpty()){
+			return ApiResponse.withError(ErrorCode.INVALID_NOTICE_BOARD_ID);
+		}
+
+		NoticeBoard noticeBoard = optionalNoticeBoard.get();
+		ApiResponse<String> deleteFileResponse = s3Adapter.deleteFile(noticeBoard.getImageUrl().split("/")[3]);
+		if(deleteFileResponse.getStatus().is5xxServerError()){
+			return ApiResponse.withError(ErrorCode.ERROR_S3_DELETE_OBJECT);
+		}
+
+		noticeBoardRepository.delete(noticeBoard);
+		return ApiResponse.ok("공지 사항을 성공적으로 삭제하였습니다.");
+	}
 }
