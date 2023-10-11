@@ -30,3 +30,6 @@ aws:
     secret-key: ${SECRET_KEY}
     region: ap-northeast-2
     bucket: ${BUCKET}
+
+server:
+  port: 8000
