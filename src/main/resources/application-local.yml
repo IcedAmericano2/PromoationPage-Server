@@ -4,14 +4,32 @@ spring:
       name: admin
       password: admin
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-    datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:~/test
-      username: sa
-      password:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
+  datasource:
+    url: jdbc:mysql://localhost:33062/promotionPage
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: promotionPage
 
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8000
+
+aws:
+  s3:
+    access-key: ${ACCESS_KEY}
+    secret-key: ${SECRET_KEY}
+    region: ap-northeast-2
+    bucket: ${BUCKET}
+    path: ${AWS_S3_PATH}

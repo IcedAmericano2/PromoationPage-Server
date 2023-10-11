@@ -34,8 +34,11 @@ dependencies {
     // swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 
-    // H2 : 개발용 database
-    runtimeOnly 'com.h2database:h2'
+    // MySQL : 개발용 database
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 }
 
