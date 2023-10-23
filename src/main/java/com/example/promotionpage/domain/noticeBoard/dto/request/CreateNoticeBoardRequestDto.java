@@ -2,7 +2,6 @@ package com.example.promotionpage.domain.noticeBoard.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 
 public record CreateNoticeBoardRequestDto(
 

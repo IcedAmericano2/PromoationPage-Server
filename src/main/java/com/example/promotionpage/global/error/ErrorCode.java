@@ -22,7 +22,10 @@ public enum ErrorCode {
 
 
 	// notice board
-	INVALID_NOTICE_BOARD_ID(HttpStatus.BAD_REQUEST, "유효하지 않은 notice board 식별자입니다.");
+	INVALID_NOTICE_BOARD_ID(HttpStatus.BAD_REQUEST, "유효하지 않은 notice board 식별자입니다."),
+
+	// project
+	INVALID_PROJECT_ID(HttpStatus.BAD_REQUEST, "유효하지 않은 project 식별자입니다.");
 
 	private final HttpStatus status;
 	private final String message;
