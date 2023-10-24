@@ -1,16 +1,19 @@
 package com.example.promotionpage.domain.project.application;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.promotionpage.domain.project.dao.ProjectRepository;
 import com.example.promotionpage.domain.project.domain.Project;
 import com.example.promotionpage.domain.project.dto.request.CreateProjectServiceRequestDto;
 import com.example.promotionpage.domain.project.dto.request.UpdatePostingStatusDto;
 import com.example.promotionpage.domain.project.dto.request.UpdateProjectServiceRequestDto;
+import com.example.promotionpage.global.adapter.S3Adapter;
 import com.example.promotionpage.global.common.response.ApiResponse;
 import com.example.promotionpage.global.error.ErrorCode;
 
@@ -22,21 +25,49 @@ import lombok.RequiredArgsConstructor;
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
+	private final S3Adapter s3Adapter;
 
-	public ApiResponse createProject(CreateProjectServiceRequestDto dto) {
-		Project project = dto.toEntity();
+	public ApiResponse createProject(CreateProjectServiceRequestDto dto , List<MultipartFile> files) {
+		List<String> imageUrlList = new LinkedList<>();
+		if(files != null){
+			for(var file : files){
+				ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+
+				if(updateFileResponse.getStatus().is5xxServerError()){
+					return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
+				}
+				String imageUrl = updateFileResponse.getData();
+				imageUrlList.add(imageUrl);
+			}
+		}
+
+		Project project = dto.toEntity(imageUrlList);
 		Project savedProject = projectRepository.save(project);
 		return ApiResponse.ok("프로젝트를 성공적으로 등록하였습니다.", savedProject);
 	}
 
-	public ApiResponse updateProject(UpdateProjectServiceRequestDto dto) {
+	public ApiResponse updateProject(UpdateProjectServiceRequestDto dto, List<MultipartFile> files) {
 		Optional<Project> optionalProject = projectRepository.findById(dto.projectId());
 		if(optionalProject.isEmpty()){
 			return ApiResponse.withError(ErrorCode.INVALID_PROJECT_ID);
 		}
 
 		Project project = optionalProject.get();
-		Project updatedProject = project.update(dto);
+
+		List<String> imageUrlList = new LinkedList<>();
+		if(files != null){
+			for(var file : files){
+				ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+
+				if(updateFileResponse.getStatus().is5xxServerError()){
+					return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
+				}
+				String imageUrl = updateFileResponse.getData();
+				imageUrlList.add(imageUrl);
+			}
+		}
+
+		Project updatedProject = project.update(dto, imageUrlList);
 
 		return ApiResponse.ok("프로젝트를 성공적으로 수정했습니다.", updatedProject);
 	}

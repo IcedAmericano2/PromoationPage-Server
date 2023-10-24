@@ -1,5 +1,7 @@
 package com.example.promotionpage.domain.project.dto.request;
 
+import java.util.List;
+
 import com.example.promotionpage.domain.project.domain.Project;
 
 public record CreateProjectServiceRequestDto(
@@ -11,7 +13,7 @@ public record CreateProjectServiceRequestDto(
 	String link,
 	String overView
 ) {
-	public Project toEntity() {
+	public Project toEntity(List<String> imageUrlList) {
 		return Project.builder()
 			.department(department)
 			.category(category)
@@ -20,6 +22,7 @@ public record CreateProjectServiceRequestDto(
 			.date(date)
 			.link(link)
 			.overView(overView)
+			.imageUrlList(imageUrlList)
 			.build();
 	}
 }

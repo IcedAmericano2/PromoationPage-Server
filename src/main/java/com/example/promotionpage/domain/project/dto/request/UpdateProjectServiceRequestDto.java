@@ -1,5 +1,7 @@
 package com.example.promotionpage.domain.project.dto.request;
 
+import java.util.LinkedList;
+
 public record UpdateProjectServiceRequestDto(
 	Long projectId,
 	String department,
