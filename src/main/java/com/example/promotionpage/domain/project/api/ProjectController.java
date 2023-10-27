@@ -1,4 +1,4 @@
-package com.example.promotionpage.domain.project.controller;
+package com.example.promotionpage.domain.project.api;
 
 import java.util.List;
 
