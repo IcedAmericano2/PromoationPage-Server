@@ -24,7 +24,7 @@ public class NoticeBoardService {
 	private final S3Adapter s3Adapter;
 
 	public ApiResponse createNoticeBoard(MultipartFile file, String title) {
-		ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+		ApiResponse<String> updateFileResponse = s3Adapter.uploadImage(file);
 		if(updateFileResponse.getStatus().is5xxServerError()){
 			return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
 		}
@@ -43,7 +43,7 @@ public class NoticeBoardService {
 		if (multipartFile == null) {
 			return ApiResponse.withError(ErrorCode.NOT_EXIST_IMAGE_FILE);
 		}
-		return s3Adapter.uploadFile(multipartFile);
+		return s3Adapter.uploadImage(multipartFile);
 	}
 
 	public ApiResponse updateNoticeBoard(MultipartFile file, String title, Long noticeBoardId) {
@@ -65,7 +65,7 @@ public class NoticeBoardService {
 			return ApiResponse.withError(ErrorCode.ERROR_S3_DELETE_OBJECT);
 		}
 
-		ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+		ApiResponse<String> updateFileResponse = s3Adapter.uploadImage(file);
 		if(updateFileResponse.getStatus().is5xxServerError()){
 			return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
 		}

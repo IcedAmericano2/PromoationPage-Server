@@ -25,7 +25,7 @@ public class S3Adapter {
 	private String bucket;
 
 
-	public ApiResponse<String> uploadFile(MultipartFile multipartFile) {
+	public ApiResponse<String> uploadImage(MultipartFile multipartFile) {
 		ObjectMetadata metadata = new ObjectMetadata();
 		String fileName = UUID.randomUUID() + ".png";
 		metadata.setContentLength(multipartFile.getSize());
@@ -37,6 +37,24 @@ public class S3Adapter {
 			return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
 		}
 	}
+
+	public ApiResponse<String> uploadFile(MultipartFile multipartFile) throws IOException {
+		String originalFilename = multipartFile.getOriginalFilename();
+
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(multipartFile.getSize());
+		metadata.setContentType(multipartFile.getContentType());
+
+		try {
+			amazonS3Client.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
+			return ApiResponse.ok("S3 버킷에 이미지 업로드를 성공하였습니다.", amazonS3Client.getUrl(bucket, originalFilename).toString());
+		}
+		catch (IOException e) {
+			return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
+		}
+	}
+
+
 
 	public ApiResponse<String> deleteFile(String fileName){
 		try{

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.promotionpage.domain.noticeBoard.domain.NoticeBoard;
 import com.example.promotionpage.domain.partnerInformation.dao.PartnerInformationRepository;
 import com.example.promotionpage.domain.partnerInformation.domain.PartnerInformation;
 import com.example.promotionpage.domain.partnerInformation.dto.request.CreatePartnerInfoServiceRequestDto;
@@ -27,7 +26,7 @@ public class PartnerInformationService {
 
 
 	public ApiResponse createPartnerInfo(CreatePartnerInfoServiceRequestDto dto, MultipartFile file) {
-		ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+		ApiResponse<String> updateFileResponse = s3Adapter.uploadImage(file);
 		if(updateFileResponse.getStatus().is5xxServerError()){
 			return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
 		}

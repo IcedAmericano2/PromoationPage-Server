@@ -31,7 +31,7 @@ public class ProjectService {
 		List<String> imageUrlList = new LinkedList<>();
 		if(files != null){
 			for(var file : files){
-				ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+				ApiResponse<String> updateFileResponse = s3Adapter.uploadImage(file);
 
 				if(updateFileResponse.getStatus().is5xxServerError()){
 					return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
@@ -57,7 +57,7 @@ public class ProjectService {
 		List<String> imageUrlList = new LinkedList<>();
 		if(files != null){
 			for(var file : files){
-				ApiResponse<String> updateFileResponse = s3Adapter.uploadFile(file);
+				ApiResponse<String> updateFileResponse = s3Adapter.uploadImage(file);
 
 				if(updateFileResponse.getStatus().is5xxServerError()){
 					return ApiResponse.withError(ErrorCode.ERROR_S3_UPDATE_OBJECT);
