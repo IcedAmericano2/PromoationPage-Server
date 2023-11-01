@@ -67,6 +67,7 @@ public class ProjectService {
 			}
 		}
 
+		imageUrlList.addAll(dto.existingImageUrlList());
 		Project updatedProject = project.update(dto, imageUrlList);
 
 		return ApiResponse.ok("프로젝트를 성공적으로 수정했습니다.", updatedProject);

@@ -1,6 +1,7 @@
 package com.example.promotionpage.domain.project.dto.request;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public record UpdateProjectServiceRequestDto(
 	Long projectId,
@@ -10,6 +11,8 @@ public record UpdateProjectServiceRequestDto(
 	String client,
 	String date,
 	String link,
-	String overView
+	String overView,
+
+	List<String> existingImageUrlList
 ) {
 }
